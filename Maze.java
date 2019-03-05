@@ -3,6 +3,8 @@ import java.io.*;
 public class Maze{
 
     private char[][]maze;
+    private int count;
+    private boolean solved;
     private boolean animate;//false by default
 
     /*Constructor loads a maze text file, and sets animate to false by default.
@@ -19,7 +21,7 @@ public class Maze{
          throw a FileNotFoundException or IllegalStateException
     */
     public static void main(String[] args) throws FileNotFoundException{
-      Maze m = new Maze("Maze1.txt");
+      Maze m = new Maze("Maze2.txt");
       System.out.println(m.solve());
     }
 
@@ -86,6 +88,8 @@ public class Maze{
       */
     public int solve(){
             //find the location of the S.
+        count = 0;
+        solved = false;
         int x = 0;
         int y = 0;
         for (int a = 0; a < maze.length; a ++) {
@@ -99,7 +103,13 @@ public class Maze{
             //erase the S
         maze[y][x] = ' ';
             //and start solving at the location of the s.
-        return solve(y, x);
+        solve(y, x);
+        for (char[] r: maze) {
+          for (char c : r) {
+            if (c == ' ') c = '.';
+          }
+        }
+        return count;
     }
 
     /*
@@ -115,8 +125,7 @@ public class Maze{
         All visited spots that were not part of the solution are changed to '.'
         All visited spots that are part of the solution are changed to '@'
     */
-    private int solve(int row, int col){ //you can add more parameters since this is private
-
+    private void solve(int row, int col){ //you can add more parameters since this is private
         //automatic animation! You are welcome.
         if(animate){
             clearTerminal();
@@ -126,21 +135,24 @@ public class Maze{
 
         //COMPLETE SOLVE
         boolean finished = false;
-        if (row < 0 || row >= maze.length || col < 0 ||col >= maze[row].length) return 0;
-        if (maze[row][col] == 'E') {
-          finished = true;
-          for (char[] x: maze) {
-            for (char y : x) {
-              if (y == ' ') y = '.';
-            }
+        if (solved);
+        else if (row < 0 || row >= maze.length || col < 0 ||col >= maze[row].length);
+        else if (maze[row][col] == 'E') solved = true;
+        else if (maze[row][col] == '#' || maze[row][col] == '@');
+        else {
+          maze[row][col] = '@';
+          count ++;
+          solve(row, col + 1);
+          solve(row, col - 1);
+          solve(row + 1, col);
+          solve(row - 1, col);
+          if (! solved) {
+            maze[row][col] = ' ';
+            count --;
           }
-          return 0;
         }
-        maze[row][col] = '@';
-        if (maze[row][col] == '#' || maze[row][col] == '@') return 0;
-        return 1 + solve(row, col + 1) + solve(row, col - 1) + solve(row + 1, col) + solve(row - 1, col);
 
-        //if (! finished) maze[row][col] = ' ';
+
     }
 
 }
