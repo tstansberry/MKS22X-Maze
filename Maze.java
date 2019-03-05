@@ -106,7 +106,7 @@ public class Maze{
             //and start solving at the location of the s.
         solve(y, x);
         if (count == 0) return -1;
-        return count + 1;
+        return count;
     }
 
     /*
