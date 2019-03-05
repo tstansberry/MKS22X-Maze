@@ -21,8 +21,9 @@ public class Maze{
          throw a FileNotFoundException or IllegalStateException
     */
     public static void main(String[] args) throws FileNotFoundException{
-      Maze m = new Maze("Maze2.txt");
+      Maze m = new Maze("Maze3.txt");
       System.out.println(m.solve());
+      System.out.println(m);
     }
 
     public String toString() {
@@ -61,7 +62,7 @@ public class Maze{
         catch (FileNotFoundException e) {
           System.out.println("Maze not found... make sure file name is correct.");
         }
-        animate = true;
+        //animate = true;
     }
 
     private void wait(int millis){
@@ -104,11 +105,6 @@ public class Maze{
         maze[y][x] = ' ';
             //and start solving at the location of the s.
         solve(y, x);
-        for (char[] r: maze) {
-          for (char c : r) {
-            if (c == ' ') c = '.';
-          }
-        }
         return count;
     }
 
@@ -147,7 +143,7 @@ public class Maze{
           solve(row + 1, col);
           solve(row - 1, col);
           if (! solved) {
-            maze[row][col] = ' ';
+            maze[row][col] = '.';
             count --;
           }
         }
